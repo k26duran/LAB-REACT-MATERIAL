@@ -14,20 +14,36 @@ export class Login extends React.Component{
     
     constructor(props) {
         super(props);
-        this.state = {email:'', password: ''};    
+        this.state = {email:"", password: ""};    
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswdChange = this.handlePasswdChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        const {email , password} = this.state;
+        if(email!=="" && password!==""){
+            localStorage.setItem(this.state.email, this.state.password);
+            
+        }
+        console.log(this.state.email, this.state.password);
+        console.log(localStorage.getItem(this.state.email) === this.state.password);
+        if(localStorage.getItem(this.state.email) === this.state.password){
+            localStorage.setItem("isLoggedIn", true);
+            
+        }
     }
     
     loggedIn(){
-        const { email , password} = this.state;
+        const {email , password} = this.state;
         if(email!=="" && password!==""){
             localStorage.setItem('email', email);
             localStorage.setItem('password',password);
             localStorage.setItem('isLoggedIn', true);
         }
     }
-
+    
     handleEmailChange(e) {
         this.setState({
             email: e.target.value
@@ -49,13 +65,13 @@ export class Login extends React.Component{
                             <LockIcon />
                         </Avatar>
                         <Typography variant="headline">Sign in</Typography>
-                        <form className="form">
+                        <form id="form" onSubmit={this.handleSubmit}>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
                                 <Input 
                                     id="email" 
                                     name="email" 
-                                    onChange={this.handleEmailChange} 
+                                    onChange={(e)=>this.handleEmailChange(e)} 
                                     autoComplete="email" 
                                     autoFocus 
                                     value={this.state.email}/>
@@ -68,7 +84,7 @@ export class Login extends React.Component{
                                     id="password"
                                     autoComplete="current-password"
                                     value={this.state.password}
-                                    onChange={this.handlePasswdChange}
+                                    onChange={(e)=>this.handlePasswdChange(e)}
                                 />
                             </FormControl>
                             <Button
@@ -77,7 +93,7 @@ export class Login extends React.Component{
                                 variant="raised"
                                 color="primary"
                                 className="submit"
-                                onClick = {this.loggedIn()}
+                                                     
                             >
                                 Sign in
                             </Button>
@@ -89,4 +105,3 @@ export class Login extends React.Component{
     }
 
 }
-export default Login;

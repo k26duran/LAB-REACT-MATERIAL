@@ -9,8 +9,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 class App extends Component {
-
-    CorrectView(isLogged) {
+    
+    constructor(props) {
+        super(props);
+        localStorage.setItem('karenduran', "karen432");
+    }
+    
+    CorrectView() {
         const LoginView = () => (
             <Login/>
         );
@@ -18,7 +23,7 @@ class App extends Component {
             <TodoApp/>  
         );
 
-        if (isLogged) {
+        if (localStorage.getItem('isLoggedIn')) {
           return (
             <div>
                 <ul>
@@ -29,7 +34,8 @@ class App extends Component {
           );
         }
         
-        return (
+        else{
+            return (
             <div>
                 <ul>
                     <li><Link to="/">Login</Link></li>
@@ -37,6 +43,7 @@ class App extends Component {
                 <Route exact path="/" component={LoginView}/>
             </div>
             );
+        }
       }
 
     render() {
@@ -44,9 +51,7 @@ class App extends Component {
        if(localStorage.getItem('isLoggedIn')=== undefined || localStorage.getItem('isLoggedIn')=== null){
             localStorage.setItem('isLoggedIn',false)
        } 
-       const isLoggedIn = localStorage.getItem('isLoggedIn');
-       console.log(isLoggedIn);
-          
+        
         return (
             <Router>
             <div className="App">
@@ -67,7 +72,7 @@ class App extends Component {
                 </div>
                 <br/>
                 <div>
-                    {this.CorrectView(isLoggedIn)}
+                    {this.CorrectView()}
                 </div>
             </div>
         </Router>
